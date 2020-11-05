@@ -85,8 +85,8 @@ for (i=0;i<=n;i++)
   printf("%3d %3d\n",i,S[i]);
 
 // Output the DP table
-if (m<=50)
-{
+//if (m<=50)
+//{
   printf("   i   card  C\n");
   printf("-----------------\n");
   for (i=0;i<=m;i++){
@@ -94,7 +94,7 @@ if (m<=50)
     printf("%4d %4d %4d\n",i,j,*(C+(i*(n+1))+j));  
     }
   }
-}
+//}
 
 // Output the backtrace
 
