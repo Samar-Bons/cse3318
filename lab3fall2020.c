@@ -98,23 +98,38 @@ for (i=0;i<=n;i++)
 
 // Output the backtrace
 
-/*for(k=0;k<n;k++){
-if (*(C+(n*(m+1))+k) == n+1)    
-  printf("No solution for cardinality %d\n",k+1);
+for(k=1;k<=n;k++){
+if (*(C+(m*(n+1))+k) == n+1)    
+  printf("No solution with %d elements\n",k);
 else
 {
-  printf("Solution for cardinality %d\n",k+1);
+  printf("Solution with %d elements\n",k);
   printf("  i   S\n");
   printf("-------\n");
-  l = k;
-  for (i=m;i>0;i-=S[*(C+(i*(m+1))+l)]){                  
-    printf("%3d %3d\n",*(C+(i*(m+1))+l),S[*(C+(i*n)+l)]);
-    l = l-1;
-  }
+  int l = k;
+  int s = m;
+  
+  while(l > 0 && s>0){
+    
+    printf("%3d %3d\n",*(C+(s*(n+1))+(l)),   S[*(C+(s*(n+1))+(l))]);
+                              
+    s = s - S[*(C+(s*(n+1))+(l))]; 
+    l--;
+   // printf("%3d %3d\n",l,s);
+
+  }               //k is current cardinality 
+  
+  /*for (i=m;i>0;i-=S[*(C+(i*(n+1))+(l))]){                  
+    printf("%3d %3d\n",*(C+(i*(n+1))+(l)),S[*(C+(i*(n+1))+(l))]);
+    l--;
+    
+  }*/
+
+
 }
 }
 
-*/
+
 
 
 }
