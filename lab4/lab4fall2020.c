@@ -56,7 +56,7 @@ int msd(int *A, int lo, int hi, int d, int k){
     //setting the count table to 0's
     for(int i = 0; i < 10; i++)
     {
-        count[i] = 0;                                                                  //count[digitAt(A[i],d)]++;
+        count[i] = 0;                                                                  
     }
 
     //copy the required part to be sorted to the temp array
