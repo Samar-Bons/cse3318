@@ -75,16 +75,19 @@ double distance(pointType tail,pointType head)
 {
     double sqDistance;
     sqDistance = (head.yCo - tail.yCo)*(head.yCo - tail.yCo) + (head.xCo - tail.xCo)*(head.xCo - tail.xCo);
-    return sqrt(sqDistance);
+    sqDistance = sqrt(sqDistance);
+    return sqDistance;
 }
 
 int main()
 {
-int i,j,k,MSTweight=0;
+int i,j,k;
+int counter = 0;
+double MSTweight=0;
 int root1,root2;
 
 scanf("%d",&numVertices);
-numEdges=(numVertices*(numVertices-1))/2; 
+numEdges=((numVertices*numVertices)-numVertices)/2; 
 edgeTab=(edgeType*) malloc(numEdges*sizeof(edgeType));
 pointTab=(pointType*) malloc(numVertices*sizeof(pointType));
 parent=(int*) malloc(numVertices*sizeof(int));
@@ -94,12 +97,22 @@ if (!edgeTab || !parent || !weight)
   printf("error 2\n");
   exit(0);
 }
-for(i=0;i<numVertices;i++){
-    scanf("%d %d",&pointTab[i].xCo,&pointTab[i].yCo);
-    pointTab[i].position = i;
-}
 for(i=0;i<numVertices;i++)
-    printf("%d %d %d",pointTab[i].position,pointTab[i].xCo,pointTab[i].yCo);
+    scanf("%d %d",&pointTab[i].xCo,&pointTab[i].yCo);
+    //pointTab[i].position = i;
+
+//printf("\ntest");
+
+
+for(i=0;i<numVertices;i++)
+    pointTab[i].position = i;
+
+for(i=0;i<numVertices;i++)
+    printf("%d %d %d\n",pointTab[i].position,pointTab[i].xCo,pointTab[i].yCo);
+
+
+k=0;
+
 for(i=0;i<numVertices;i++)
 {
     for(j=i+1;j<numVertices;j++){
@@ -125,20 +138,25 @@ for (i=0;i<numEdges;i++)
   root1=find(edgeTab[i].tail);
   root2=find(edgeTab[i].head);
   if (root1==root2)
-    printf("%d %d %d discarded\n",edgeTab[i].tail,edgeTab[i].head,
+    printf("%d %d %lf discarded\n",edgeTab[i].tail,edgeTab[i].head,
       edgeTab[i].weight);
   else
   {
-    printf("%d %d %d included\n",edgeTab[i].tail,edgeTab[i].head,
+    printf("%d %d %lf included\n",edgeTab[i].tail,edgeTab[i].head,
       edgeTab[i].weight);
     MSTweight+=edgeTab[i].weight;
     unionFunc(root1,root2);
+    counter++;
   }
+  if(counter==(numVertices-1))
+    break;
 }
 if (numTrees!=1)
   printf("MST does not exist\n");
-printf("Sum of weights of spanning edges %d\n",MSTweight);
+printf("Sum of weights of spanning edges %lf\n",MSTweight);
 free(edgeTab);
 free(parent);
 free(weight);
+free(pointTab);
+
 }
