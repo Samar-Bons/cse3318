@@ -1,9 +1,18 @@
-// Kruskal's MST using union-find trees
+/*
+CSE 3318 Prof. Bob Weems Fall 2020 Lab 5 
+Samarjit Singh Bons 1001623236
+gcc lab5fall2020.c -lm
+
+Kruskal's Euclidian MST using union-find trees
+Description: Finding an Euclidean Minimum Spanning Tree using Kruskal's Algorithm
+given the number of vertices and the (x,y) coordinates of every vertice.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
+//Declaring variables and structs for vertices and edges
 int numVertices,numEdges;
 int *parent,*weight,numTrees;
 
@@ -20,8 +29,10 @@ struct point {
 typedef struct point pointType;
 pointType *pointTab;
 
+
 int find(int x)
 // Find root of tree containing x
+// Argument: integer x 
 {
 int i,j,root;
 
@@ -41,7 +52,8 @@ return root;
 }
 
 void unionFunc(int i,int j)
-// i and j must be roots!
+// Function to add a subtree to the MST
+// Arguments  int i and int j must be roots!
 {
 if (weight[i]>weight[j])
 {
@@ -72,6 +84,8 @@ else
 }
 
 double distance(pointType tail,pointType head)
+// Used to find euclidean distance between the head and tail point
+// Arguments : pointType tail and pointType head
 {
     double sqDistance;
     sqDistance = (head.yCo - tail.yCo)*(head.yCo - tail.yCo) + (head.xCo - tail.xCo)*(head.xCo - tail.xCo);
@@ -82,37 +96,45 @@ double distance(pointType tail,pointType head)
 int main()
 {
 int i,j,k;
+k=0;
 int counter = 0;
 double MSTweight=0;
 int root1,root2;
 
+
 scanf("%d",&numVertices);
-numEdges=((numVertices*numVertices)-numVertices)/2; 
+//taking in number of vertices
+
+
+numEdges=((numVertices*numVertices)-numVertices)/2;
+
+//Dynamic memory allocation
 edgeTab=(edgeType*) malloc(numEdges*sizeof(edgeType));
 pointTab=(pointType*) malloc(numVertices*sizeof(pointType));
 parent=(int*) malloc(numVertices*sizeof(int));
 weight=(int*) malloc(numVertices*sizeof(int));
+
 if (!edgeTab || !parent || !weight)
 {
   printf("error 2\n");
   exit(0);
 }
+
+//Take in the (x,y) coordinates for vertices
 for(i=0;i<numVertices;i++)
     scanf("%d %d",&pointTab[i].xCo,&pointTab[i].yCo);
-    //pointTab[i].position = i;
-
-//printf("\ntest");
 
 
 for(i=0;i<numVertices;i++)
     pointTab[i].position = i;
 
+// echo the points
 for(i=0;i<numVertices;i++)
     printf("%d %d %d\n",pointTab[i].position,pointTab[i].xCo,pointTab[i].yCo);
 
 
-k=0;
 
+// Generate edges and corresponding weights
 for(i=0;i<numVertices;i++)
 {
     for(j=i+1;j<numVertices;j++){
@@ -123,16 +145,21 @@ for(i=0;i<numVertices;i++)
     }
 }
 
-//for (i=0;i<numEdges;i++)
-  //scanf("%d %d %d",&edgeTab[i].tail,&edgeTab[i].head,&edgeTab[i].weight);
 
+// Initializing arrays
 for (i=0;i<numVertices;i++)
 {
   parent[i]=i;
   weight[i]=1;
 }
+
+// Each vertices is a tree initially
 numTrees=numVertices;
+
+// library sort the edges according to weight
 qsort(edgeTab,numEdges,sizeof(edgeType),weightAscending);
+
+// for loop to grow the MST 
 for (i=0;i<numEdges;i++)
 {
   root1=find(edgeTab[i].tail);
@@ -150,7 +177,9 @@ for (i=0;i<numEdges;i++)
   }
   if(counter==(numVertices-1))
     break;
+  //break the for loop when MST reaches every vertice in the graph
 }
+
 if (numTrees!=1)
   printf("MST does not exist\n");
 printf("Sum of weights of spanning edges %lf\n",MSTweight);
